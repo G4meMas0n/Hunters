@@ -1,0 +1,6 @@
+main: de.g4memas0n.hunters.Hunters
+name: Hunters
+version: 1.0.0-dev
+description: A plugin that
+author: G4meMas0n
+api-version: "1.13"
