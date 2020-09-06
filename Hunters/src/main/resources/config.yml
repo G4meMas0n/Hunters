@@ -1,0 +1,41 @@
+##################################################
+#      Hunters - Plugin Configuration File       #
+##################################################
+
+# Sets whether the plugin should log debug information's to the console: (Type: Boolean, Default: false)
+debug: false
+
+# Sets the locale of the plugin: (Type: String, Default: "en")
+# Note: Locale names are of the form: "<language>[_<country>[_<variant>]]"
+locale: "en"
+
+# Sets various options related to tracking notifications:
+notify:
+
+  # Sets whether tracking notifications should be send to players: (Type: Boolean, Default: true)
+  # Note: When enabled, notifications will be send when the tracker can/will be updated again.
+  enabled: true
+
+  # Sets whether tracking notifications should be send to everyone: (Type: Boolean, Default: true)
+  # Note: When disabled, only hunters will be notified.
+  everyone: true
+
+  # Sets whether tracking notifications should be send as title: (Type: Boolean, Default: true)
+  # Note: When disabled, notifications will be send as chat message.
+  #title: true
+
+  # Sets the warmup for tracking notifications, in seconds: (Type: Integer, Default: 3)
+  # Note: To disable the notification warmup set the value to: 'warmup: 0'
+  # Note: The value must be between 0 and 10. If it is not between these numbers, the default value will be used.
+  warmup: 3
+
+# Sets various options related to tracking:
+track:
+
+  # Sets whether the tracker should be updated automatic: (Type: Boolean, Default: true)
+  # Note: When disabled, players must interact (Right Click) with the tracker to update it.
+  automatic: true
+
+  # Sets the time after the tracker can/will be updated again, in seconds: (Type: Integer, Default: 60)
+  # Note: Must be greater than 0 when automatic tracking is enabled. (automatic: true)
+  timer: 60
