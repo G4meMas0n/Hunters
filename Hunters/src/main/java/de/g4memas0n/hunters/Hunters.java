@@ -1,11 +1,16 @@
 package de.g4memas0n.hunters;
 
+import de.g4memas0n.hunters.command.BasicCommand;
+import de.g4memas0n.hunters.command.BasicPluginCommand;
 import de.g4memas0n.hunters.configuration.Settings;
+import de.g4memas0n.hunters.listener.BasicListener;
 import de.g4memas0n.hunters.util.logging.BasicLogger;
 import de.g4memas0n.hunters.util.messaging.Messages;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * The Hunters main class.
@@ -14,6 +19,9 @@ import org.jetbrains.annotations.NotNull;
  * @since Release 1.0.0
  */
 public final class Hunters extends JavaPlugin {
+
+    private final Set<BasicPluginCommand> commands;
+    private final Set<BasicListener> listeners;
 
     private final BasicLogger logger;
 
@@ -24,6 +32,9 @@ public final class Hunters extends JavaPlugin {
     private boolean enabled;
 
     public Hunters() {
+        this.commands = new HashSet<>();
+        this.listeners = new HashSet<>();
+
         this.logger = new BasicLogger(super.getLogger(), "Plugin", this.getName());
     }
 
@@ -70,6 +81,22 @@ public final class Hunters extends JavaPlugin {
             this.onLoad();
         }
 
+        this.getLogger().debug("Register plugin commands and listeners...");
+
+        if (this.commands.isEmpty()) {
+            this.commands.add(null); // Add plugin commands
+        }
+
+        this.commands.forEach(command -> command.register(this));
+
+        if (this.listeners.isEmpty()) {
+            this.listeners.add(null); // Add plugin listeners.
+        }
+
+        this.listeners.forEach(listener -> listener.register(this));
+
+        this.getLogger().debug("Plugin commands and listeners has been registered.");
+
         this.enabled = true;
     }
 
@@ -79,6 +106,13 @@ public final class Hunters extends JavaPlugin {
             this.getLogger().severe("Tried to disable plugin twice. Plugin is already disabled.");
             return;
         }
+
+        this.getLogger().debug("Unregister plugin command and listeners...");
+
+        this.commands.forEach(BasicCommand::unregister);
+        this.listeners.forEach(BasicListener::unregister);
+
+        this.getLogger().debug("Plugin command and listeners has been unregistered.");
 
         this.settings = null;
 
@@ -92,6 +126,10 @@ public final class Hunters extends JavaPlugin {
 
         this.logger.setDebug(this.settings.isDebug());
         this.messages.setLocale(this.settings.getLocale());
+
+        for (final BasicPluginCommand command : this.commands) {
+            command.getCommand().setPermissionMessage(this.messages.translate("noPermission"));
+        }
     }
 
     @Override
